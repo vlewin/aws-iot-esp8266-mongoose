@@ -1,0 +1,13 @@
+query listStates {
+  listStates(filter: {
+    id: { eq: "esp8266_C05332" }
+    # timestamp: { between: [1535745122.166,1535745133.084] }
+  }) {
+    items {
+      id
+      timestamp
+      humidity
+      voltage
+    }
+  }
+}

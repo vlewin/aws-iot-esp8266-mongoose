@@ -1,0 +1,61 @@
+author: mongoose-os
+description: ESP8266 device connected to AWS IoT publishing DHT22 sensor data (JavaScript)
+version: 1.0
+arch: esp8266
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+build_vars:
+  FLASH_SIZE: 1048576
+  MGOS_ADC_MODE_VDD: 1
+
+config_schema:
+  - ["device.id", <DEVICE_ID>] # e.g. "esp8266_C05332"
+  - ["wifi.sta.enable", true]
+  - ["wifi.sta.ssid", <SSID>]
+  - ["wifi.sta.pass", <PASS>]
+  - ["wifi.ap.enable", false]
+  - ["i2c.enable", true]
+  - ["dash.enable", false]
+  - ["dash.token", <DASHBOARD TOKEN>]
+  - ["debug.level", 3]
+  - ["aws.thing_name", <THING_NAME>] # e.g. "esp8266_C05332"
+  - ["mqtt.enable", true]
+  - ["mqtt.server", <IOT ENDPOINT>] # "<ID>.iot.eu-central-1.amazonaws.com:1883"
+  - ["mqtt.ssl_ca_cert", "ca.pem"]
+  - ["mqtt.ssl_cert", <CERT>] # <DEVICE_ID>.crt.pem
+  - ["mqtt.ssl_key", <CERT_KEY>] # <DEVICE_ID>.key.pem
+
+sources:
+  - src
+filesystem:
+  - fs
+libs:
+  # common mgos libs
+  - origin: https://github.com/mongoose-os-libs/ca-bundle
+  - origin: https://github.com/mongoose-os-libs/i2c
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config
+  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
+  - origin: https://github.com/mongoose-os-libs/rpc-uart
+  - origin: https://github.com/mongoose-os-libs/spi
+
+  # libs necessary for the current app
+  - origin: https://github.com/mongoose-os-libs/aws
+  - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/dht
+  - origin: https://github.com/mongoose-os-libs/mjs
+  - origin: https://github.com/mongoose-os-libs/sntp
+  - origin: https://github.com/mongoose-os-libs/adc
+  - origin: https://github.com/mongoose-os-libs/dash
+  # - origin: https://github.com/mongoose-os-libs/shadow
+  # - origin: https://github.com/mongoose-os-libs/ota-shadow
+  # - origin: https://github.com/mongoose-os-libs/ota-http-client
+  # - origin: https://github.com/mongoose-os-libs/ota-http-server
+
+
+tags:
+  - js
+  - hw
+
+manifest_version: 2017-05-18

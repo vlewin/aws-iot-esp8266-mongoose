@@ -1,0 +1,32 @@
+Resources:
+  AWSIoTESP8266MongooseTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Delete
+
+    Properties:
+      TableName: 'aws-iot-esp8266-mongoose'
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+        -
+          AttributeName: timestamp
+          AttributeType: N
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+        -
+          AttributeName: timestamp
+          KeyType: RANGE
+
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true

@@ -1,0 +1,103 @@
+service: aws-iot-esp8266-mongoose
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: development
+  region: eu-central-1
+  profile: <AWS_PROFILE_NAME>
+  cfLogs: true
+  memorySize: 256
+  timeout: 5
+
+  environment:
+    TZ: 'Europe/Berlin'
+    NODE_ENV: ${opt:stage, self:provider.stage}
+    IOT_ENDPOINT_HOST: <IOT_ENDPOINT_HOST> # <ID>.iot.eu-central-1.amazonaws.com
+    IOT_AWS_REGION: eu-central-1
+    TOKEN: <API_TOKEN>
+
+  custom:
+    stage: "${opt:stage, self:provider.stage}"
+    webpack:
+      webpackConfig: 'webpack.config.js'   # Name of webpack configuration file
+      includeModules: false   # Node modules configuration for packaging
+      packager: 'yarn'   # Packager that will be used to package your external modules
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - iot:Connect
+        - iot:Publish
+        - iot:Subscribe
+        - iot:Receive
+
+      Resource: "*"
+
+    - Effect: Allow
+      Action:
+        - dynamodb:CreateTable
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+
+        # NOTE: Permissions needed for stream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:DescribeStream
+        - dynamodb:ListStreams
+
+      # NOTE: Get logical IDs below where they are provisioned
+      Resource:
+        - { "Fn::GetAtt": ["AWSIoTESP8266MongooseTable", "Arn"] }
+
+package:
+  excludeDevDependencies: true
+  include:
+    - authorizer.js
+    - signer.js
+    - db_stream_processor.js
+
+  exclude:
+    - ./**
+
+functions:
+  authorizer:
+    handler: authorizer.handler
+
+  AWSIotUrlSigner:
+    handler: signer.handler
+    description: Sign AWS IOT Core endpoint url
+    events:
+      - http:
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
+            type: token
+
+          path: sign
+          method: get
+          cors: true
+
+  DBStreamProcessor:
+    handler: db_stream_processor.handler
+    description: Dynamo DB stream processor
+    events:
+      - stream:
+          type: dynamodb
+          arn: { Fn::GetAtt: [ AWSIoTESP8266MongooseTable, StreamArn ] }
+          startingPosition: LATEST
+          batchSize: 1
+          enabled: true
+
+resources:
+   - ${file(resources/api_gateway.yml)}
+   - ${file(resources/dynamo_db.yml)}
+
+plugins:
+  - serverless-webpack

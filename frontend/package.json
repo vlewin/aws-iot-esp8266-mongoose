@@ -1,0 +1,34 @@
+{
+  "name": "aws-iot-esp8266-mongoose-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "aws-appsync": "^1.3.4",
+    "aws-appsync-js": "^0.0.1",
+    "aws-signature-v4": "^1.2.1",
+    "axios": "^0.18.0",
+    "crypto": "^1.0.1",
+    "graphql-tag": "^2.9.2",
+    "vue": "^2.5.17",
+    "vue-apexcharts": "^1.1.0",
+    "vue-apollo": "^3.0.0-beta.18",
+    "vue-axios": "^2.1.3",
+    "vue-mqtt": "^2.0.3",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-standard": "^3.0.1",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
