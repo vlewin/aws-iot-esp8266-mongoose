@@ -22,6 +22,8 @@ let params = {
     },
 };
 
+
+
 Dynamo.query(params).promise().then((data) => {
   console.log('Query succeeded.');
   console.log(data)
