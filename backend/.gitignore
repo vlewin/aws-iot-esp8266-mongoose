@@ -1,4 +1,4 @@
 .serverless
 node_modules
-serverless.yml
+environment.yml
 yarn-error.log

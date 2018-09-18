@@ -77,6 +77,7 @@ export default {
   mounted () {
     console.log('HOME MOUNTED')
     this.$mqtt.subscribe('esp8266_C05332/stats', {})
+    this.$mqtt.subscribe('esp8266_C05332/updates', {})
 
     // FIXME: Replace with simple aws-appsync library
     // this.$apollo.provider.defaultClient.hydrated()
@@ -111,6 +112,12 @@ export default {
       let serie = JSON.parse(String.fromCharCode.apply(null, data))
       this.$store.dispatch('setCurrent', serie)
       this.$store.dispatch('updateData', serie)
+    },
+
+    'esp8266_C05332/updates' (data, topic) {
+      console.log(topic + ': ' + String.fromCharCode.apply(null, data))
+      let serie = JSON.parse(String.fromCharCode.apply(null, data))
+      console.log(serie)
     }
   }
 }
