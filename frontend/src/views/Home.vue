@@ -4,7 +4,9 @@
       <div class="mainCardHeader">
         <h3>
           ESP8266 - AWS IoT Core dashboard ({{ lastPublished }})
-          <button v-on:click="publish">Publish test message</button>
+          <button v-on:click="publish">
+            {{ interval ? 'PUBLISHINNG ...' : 'Publish test message' }}
+          </button>
         </h3>
       </div>
       <div class="mainCardContent">
@@ -65,6 +67,7 @@ export default {
   data () {
     return {
       hydrated: false,
+      interval: null,
       data: [1, 2, 3, 4, 5],
       sensors: {
         temperature: this.random(20, 28),
@@ -96,13 +99,20 @@ export default {
     },
 
     publish () {
-      this.$mqtt.publish('esp8266_C05332/stats', JSON.stringify({
-        id: 'esp8266_C05332',
-        timestamp: new Date().getTime() / 1000,
-        temperature: Number((Math.random() * (30.0 - 18.0) + 18.0).toFixed(1)),
-        humidity: Number((Math.random() * (60.0 - 30.0) + 30.0).toFixed(1)),
-        voltage: Number((Math.random() * (3.6 - 3.0) + 3.0).toFixed(1))
-      }))
+      clearInterval(this.interval)
+
+      this.interval = setInterval(() => {
+        let timestamp = Math.round(new Date().getTime() / 1000)
+
+        this.$mqtt.publish('esp8266_C05332/stats', JSON.stringify({
+          id: 'esp8266_C05332',
+          timestamp: timestamp,
+          temperature: Number((Math.random() * (30.0 - 18.0) + 18.0).toFixed(1)),
+          humidity: Number((Math.random() * (60.0 - 30.0) + 30.0).toFixed(1)),
+          voltage: Number((Math.random() * (3.6 - 3.0) + 3.0).toFixed(1)),
+          ttl: timestamp + 60 * 60
+        }))
+      }, 10000)
     }
   },
 
