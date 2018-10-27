@@ -10,6 +10,6 @@ export default new AppSyncClient({
   auth: {
     mode: 'API_KEY_MODE',
     apiKey: process.env.VUE_APP_GRAPTHQL_API_KEY,
-    apiUrl: process.env.VUE_APP_GRAPTHQL_ENDPOINT
+    apiUrl: process.env.VUE_APP_GRAPTHQL_ENDPOINT || 'http://localhost'
   }
 })

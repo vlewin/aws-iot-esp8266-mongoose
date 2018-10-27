@@ -6,6 +6,9 @@ TBD
 
 
 ## TODO:
+Authenticating an AWS AppSync GraphQL API with Auth0
+- https://medium.com/open-graphql/authenticating-an-aws-appsync-graphql-api-with-auth0-48835691810a
+
 Test device shadow OTA update
 - https://github.com/mongoose-os-libs/ota-shadow
 
