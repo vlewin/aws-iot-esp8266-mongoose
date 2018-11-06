@@ -13,7 +13,7 @@
       :use-css-transforms="true">
 
       <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @resize="resizeEvent">
-        <widget v-if="item.component === 'widget'" :title="item.i"></widget>
+        <widget v-if="item.component === 'widget'" :title="item.i" :value="item.value" :unit="item.unit"></widget>
         <chart v-if="item.component === 'chart'" :title="item.i" :type="item.type"></chart>
         <location v-if="item.component === 'map'" :title="item.i" :type="item.type"></location>
       </grid-item>
@@ -42,11 +42,39 @@ export default {
   data () {
     return {
       layout: [
-        { 'x': 0, 'y': 0, 'w': 3, 'h': 4, 'i': 'Temp', 'moved': false, component: 'widget', },
-        { 'x': 3, 'y': 0, 'w': 3, 'h': 4, 'i': 'Humid', 'moved': false, component: 'widget', },
-        { 'x': 6, 'y': 0, 'w': 3, 'h': 4, 'i': 'Battery', 'moved': false, component: 'widget', },
-        { 'x': 9, 'y': 0, 'w': 3, 'h': 4, 'i': 'Heart beat', 'moved': false, component: 'widget', },
-        { 'x': 0, 'y': 4, 'w': 6, 'h': 6, 'i': 'Temp Chart', 'moved': false, component: 'chart', type: 'bar' },
+        { 
+          'x': 0, 
+          'y': 0, 
+          'w': 3, 
+          'h': 4, 
+          'i': 'Temperature', 
+          'moved': false, 
+          component: 'widget', 
+          value: 21.55,
+          unit: 'C°'
+        },
+        
+        { 
+          'x': 3, 
+          'y': 0, 
+          'w': 3, 
+          'h': 4, 
+          'i': 'Humidity', 
+          'moved': false, 
+          component: 'widget', 
+        },
+        
+        { 
+          'x': 6,
+          'y': 0,
+          'w': 3,
+          'h': 4,
+          'i': 'Battery',
+          'moved': false,
+          component: 'widget',
+        },
+        { 'x': 9, 'y': 0, 'w': 3, 'h': 4, 'i': 'Heart Beat', 'moved': false, component: 'widget', },
+        { 'x': 0, 'y': 4, 'w': 6, 'h': 6, 'i': 'Temperature Chart', 'moved': false, component: 'chart', type: 'bar' },
         { 'x': 6, 'y': 4, 'w': 6, 'h': 6, 'i': 'Humidity Chart', 'moved': false, component: 'chart', type: 'line' },
         { 'x': 0, 'y': 8, 'w': 12, 'h': 8, 'i': 'Map', 'moved': false, component: 'map', }
       ]
@@ -73,19 +101,20 @@ export default {
 <style lang="sass">
   #content
     width: 100%
+    height: 100vh
 
   .vue-grid-layout
-    background: #eee
+    background: #fafafa
 
   .layoutJSON
     background: #ddd
-    border: 1px solid black
+    border: 1px solid #ddd
     margin-top: 10px
     padding: 10px
 
   .eventsJSON
     background: #ddd
-    border: 1px solid black
+    border: 1px solid #ddd
     margin-top: 10px
     padding: 10px
     height: 100px
@@ -99,7 +128,10 @@ export default {
   .vue-grid-item
     &:not(.vue-grid-placeholder)
       background: #ccc
-      border: 1px solid black
+      border: 1px solid #ddd
+      border-radius: 3px
+      overflow: hidden;
+
     &.resizing
       opacity: 0.9
     &.static

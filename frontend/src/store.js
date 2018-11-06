@@ -13,7 +13,32 @@ export default new Vuex.Store({
     current: {},
     temperature: [],
     humidity: [],
-    voltage: []
+    voltage: [],
+
+    devices: [{
+      id: 1,
+      name: 'Device 1',
+      data: {
+        'Battery Level': 3.95,
+        'Reserved': 5,
+        'Mode': 1,
+        'Alert Flag': 1,
+        'Temperature': 20.75,
+        'Humidity': 59.5
+      }
+    },
+    {
+      id: 2,
+      name: 'Device 2',
+      data: {
+        'Battery Level': 3.82,
+        'Reserved': 5,
+        'Mode': 1,
+        'Alert Flag': 1,
+        'Temperature': 18.75,
+        'Humidity': 42.5
+      }
+    }]
   },
 
   mutations: {

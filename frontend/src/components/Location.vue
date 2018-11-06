@@ -112,9 +112,9 @@ export default {
 
 <style lang="sass" scoped>
   .map
-    // background-color: white
-    height: 100%
-    width: 100%
+    background-color: white
+    height: calc(100% - 2em)
+    width: calc(100% - 2em)
     // box-shadow: 0 0 10px rgba(0,0,0,0.2)
     box-shadow: 0 5px 40px rgba(0,0,0,0.2)
 
@@ -125,6 +125,7 @@ export default {
     flex-direction: column
 
     text-align: center
+    padding: 1em;
 
     animation:
       name: miniCard
