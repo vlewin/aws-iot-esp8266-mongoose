@@ -13,7 +13,32 @@ export default new Vuex.Store({
     current: {},
     temperature: [],
     humidity: [],
-    voltage: []
+    voltage: [],
+
+    devices: [{
+      id: 1,
+      name: 'Device 1',
+      data: {
+        'Battery Level': 3.95,
+        'Reserved': 5,
+        'Mode': 1,
+        'Alert Flag': 1,
+        'Temperature': 20.75,
+        'Humidity': 59.5
+      }
+    },
+    {
+      id: 2,
+      name: 'Device 2',
+      data: {
+        'Battery Level': 3.82,
+        'Reserved': 5,
+        'Mode': 1,
+        'Alert Flag': 1,
+        'Temperature': 18.75,
+        'Humidity': 42.5
+      }
+    }]
   },
 
   mutations: {
@@ -67,42 +92,40 @@ export default new Vuex.Store({
     },
 
     getData: ({ commit, state }) => {
-      const map = {
-        '24h': 1,
-        'week': 3,
-        'month': 24
-      }
-
       // const map = {
-      //   '24h': 24,
-      //   'week': 168,
-      //   'month': 730
+      //   '24h': 1,
+      //   'week': 3,
+      //   'month': 24
       // }
+
+      const map = {
+        '24h': 24,
+        'week': 168,
+        'month': 730
+      }
 
       let to = Math.round(new Date().getTime() / 1000)
       let from = to - (map[state.range] * 3600)
 
       console.log(`Get data for range: ${new Date(from * 1000).toLocaleString()} - ${new Date(to * 1000).toLocaleString()}`)
-      console.log(from)
-      console.log(to)
       const query = `
-      query listStates {
-        listStates(filter: {
-          id: { eq: "esp8266_C05332" }
-          timestamp: { gt: ${from} }
-        }, limit: 3000) {
-          items {
-            id
-            timestamp
-            temperature
-            humidity
-            voltage
+        query getStatesInRange {
+          getStatesInRange(
+           id: "esp8266_C05332",
+           from: ${from},
+           to: ${to}) {
+            items {
+              id,
+              timestamp,
+              temperature,
+              humidity,
+              voltage
+            }
           }
-        }
-      }`
+        }`
 
       appSyncClient.request(query).then((response) => {
-        commit('SET_DATA', response.data.listStates.items)
+        commit('SET_DATA', response.data.getStatesInRange.items)
       })
     },
 

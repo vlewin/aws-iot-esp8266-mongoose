@@ -1,0 +1,5 @@
+TZ: 'Europe/Berlin'
+NODE_ENV: ${opt:stage, self:provider.stage}
+IOT_ENDPOINT_HOST: <IOT_ENDPOINT_HOST> # <ID>.iot.eu-central-1.amazonaws.com
+IOT_AWS_REGION: eu-central-1
+TOKEN: <API_TOKEN>

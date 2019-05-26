@@ -7,9 +7,11 @@ import mqtt from './mqtt'
 // import appsyncProvider from './vue-apollo'
 
 import VueApexCharts from 'vue-apexcharts'
+import VueGridLayout from 'vue-grid-layout'
 
 Vue.config.productionTip = false
 Vue.use(VueApexCharts)
+Vue.use(VueGridLayout)
 
 new Vue({
   router,

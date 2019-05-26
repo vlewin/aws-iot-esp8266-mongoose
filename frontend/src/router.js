@@ -13,6 +13,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue')
     },
     {
+      path: '/grid',
+      name: 'Grid',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "grid" */ './views/Grid.vue')
+    },
+    {
       path: '/log',
       name: 'log',
       // route level code-splitting

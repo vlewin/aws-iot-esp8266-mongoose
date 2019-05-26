@@ -30,3 +30,29 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: ttl
         Enabled: true
+
+  AWSIoTESP8266Mongoose24HoursTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Delete
+
+    Properties:
+      TableName: 'aws-iot-esp8266-mongoose-24-hours'
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true

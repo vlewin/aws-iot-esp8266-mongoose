@@ -4,17 +4,12 @@ provider:
   runtime: nodejs8.10
   stage: development
   region: eu-central-1
-  profile: <AWS_PROFILE_NAME>
   cfLogs: true
   memorySize: 256
   timeout: 5
 
   environment:
-    TZ: 'Europe/Berlin'
-    NODE_ENV: ${opt:stage, self:provider.stage}
-    IOT_ENDPOINT_HOST: <IOT_ENDPOINT_HOST> # <ID>.iot.eu-central-1.amazonaws.com
-    IOT_AWS_REGION: eu-central-1
-    TOKEN: <API_TOKEN>
+    ${file(environment.yml)}
 
   custom:
     stage: "${opt:stage, self:provider.stage}"
@@ -31,6 +26,7 @@ provider:
         - iot:Subscribe
         - iot:Receive
 
+      # Resource: "arn:aws:iot:eu-west-1:690635432842:client/a2ghmpgy4q9x2c"
       Resource: "*"
 
     - Effect: Allow
@@ -49,10 +45,12 @@ provider:
         - dynamodb:GetShardIterator
         - dynamodb:DescribeStream
         - dynamodb:ListStreams
+        - dynamodb:UpdateItem
 
       # NOTE: Get logical IDs below where they are provisioned
       Resource:
         - { "Fn::GetAtt": ["AWSIoTESP8266MongooseTable", "Arn"] }
+        - { "Fn::GetAtt": ["AWSIoTESP8266Mongoose24HoursTable", "Arn"] }
 
 package:
   excludeDevDependencies: true
@@ -83,6 +81,17 @@ functions:
           path: sign
           method: get
           cors: true
+
+  DataAggregator:
+    handler: aggregator.handler
+    description: Time series data aggregator
+    events:
+      - stream:
+          type: dynamodb
+          arn: { Fn::GetAtt: [ AWSIoTESP8266MongooseTable, StreamArn ] }
+          startingPosition: TRIM_HORIZON
+          batchSize: 100
+          enabled: true
 
   DBStreamProcessor:
     handler: db_stream_processor.handler

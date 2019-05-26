@@ -14,6 +14,7 @@
   "dependencies": {
     "aws-signature-v4": "^1.2.1",
     "crypto": "^1.0.1",
+    "date-fns": "^1.29.0",
     "highland": "^2.13.0",
     "serverless-webpack": "^5.2.0",
     "uuid": "^3.3.2",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "aws-sdk": "^2.316.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.0",
     "babel-preset-env": "^1.7.0",

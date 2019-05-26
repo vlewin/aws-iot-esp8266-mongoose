@@ -139,7 +139,7 @@ export default {
             },
             offsetX: 0,
             offsetY: -2,
-            format: 'HH:mm',
+            // format: 'ddd HH:mm',
             formatter: undefined,
             datetimeFormatter: {
               year: 'yy',
